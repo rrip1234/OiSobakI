@@ -447,8 +447,20 @@ def decide(S: GameState, M: GameMap, P: Paths, turn: int) -> Actions:
     """
     Priority:
     1. HQ being attacked
-        1-1) if my_warriors > 
+        1-1) 
     """
+
+    def building_at(region : int) -> (Building | None):
+        return S.find_building(region)
+    def get_warrior(wid : WarriorId) -> (Warrior | None) :
+        return S.find_warrior(WarriorId)
+    def enemy_warriors_at(region : int) -> list[Warrior] :
+        return [w for w in enemy_warriors if w.region == region]
+    def my_warriors_at(region : int) -> list[Warrior] :
+        return [w for w in my_warriors if w.region == region]
+    def ordered_strongholds(region : int) -> list[Region]:
+        return sorted(strongholds, key = lambda r : len(path(P, r.id, region)))
+    
 
     a : Actions = Actions()
     my_hq : Building = building_at(M.my_hq)
@@ -460,18 +472,9 @@ def decide(S: GameState, M: GameMap, P: Paths, turn: int) -> Actions:
     my_buildings : list[Building] = [b for b in S.buildings if b.side == my_side]
     enemy_buildings : list[Building] = [b for b in S.buildings if b.side == enemy_side]
     regions : list[Region] = [Region(i, (i in M.strongholds), building_at(i), [w for w in S.warriors if w.region == i]) for i in range(1, M.N+1)]
-
-
-    def building_at(region : int) -> (Building | None):
-        return S.find_building(region)
-    def get_warrior(wid : WarriorId) -> (Warrior | None) :
-        return S.find_warrior(WarriorId)
-    def enemy_warriors_at(region : int) -> list[Warrior] :
-        return [w for w in enemy_warriors if w.region == region]
-    def my_warriors_at(region : int) -> list[Warrior] :
-        return [w for w in my_warriors if w.region == region]
-    
-
+    strongholds : list[Region] = [r for r in regions if r.constructable]
+    enemy_warriors_at(1)
+    print(ordered_strongholds(1))
 
 
 
